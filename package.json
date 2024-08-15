@@ -8,6 +8,10 @@
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.1.0"
   },
+  "scripts": {
+    "build": "npx tsc",
+    "start": "node ./out/index"
+  },
   "dependencies": {
     "discord.js": "^14.15.3"
   }
