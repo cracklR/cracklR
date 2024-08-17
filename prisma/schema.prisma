@@ -35,6 +35,8 @@ model Emoji {
   UserEmoji UserEmoji[]
 }
 
+// These could be renamed later
+
 model Prompt {
   id             String           @id
   prompt         String
