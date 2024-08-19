@@ -51,3 +51,9 @@ export default class session {
     if (this._hintCount > 3) this._hintCount = 3;
   }
 }
+
+// Nothing sophistcated to really store these things; if we need some functions to manipulate this later, we can create them
+// Once a session is created, it can be retrieved via thread ID
+const sessionStore = new Map<string, session>();
+
+export { sessionStore, onEndListener };
