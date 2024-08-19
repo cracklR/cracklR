@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id        Int      @id @default(autoincrement())
+  guildId   String
+  channelId String
+  userId    String
+  createdAt DateTime @default(now())
+}
+
+model User {
+  id               String             @id
+  exp              Int                @default(0)
+  active           Boolean            @default(true)
+  UserPromptUnlock UserPromptUnlock[]
+  UserEmoji        UserEmoji[]
+}
+
+model Emoji {
+  id        String      @id
+  name      String
+  UserEmoji UserEmoji[]
+}
+
+// These could be renamed later
+
+model Prompt {
+  id             String           @id
+  prompt         String
+  PromptParticle PromptParticle[]
+}
+
+model Particle {
+  id             String           @id
+  particle       String
+  PromptParticle PromptParticle[]
+}
+
+// Many to many relations
+
+model UserEmoji {
+  user    User   @relation(fields: [userId], references: [id])
+  emoji   Emoji  @relation(fields: [emojiId], references: [id])
+  userId  String
+  emojiId String
+
+  @@id([userId, emojiId])
+}
+
+model PromptParticle {
+  id           Int            @id
+  prompt       Prompt         @relation(fields: [promptId], references: [id])
+  particle     Particle       @relation(fields: [particleId], references: [id])
+  promptId     String
+  particleId   String
+  PromptUnlock PromptUnlock[]
+}
+
+model PromptUnlock {
+  id               Int                @id
+  promptParticle   PromptParticle     @relation(fields: [promptParticleId], references: [id])
+  promptParticleId Int
+  UserPromptUnlock UserPromptUnlock[]
+}
+
+model UserPromptUnlock {
+  user           User         @relation(fields: [userId], references: [id])
+  unlock         PromptUnlock @relation(fields: [promptUnlockId], references: [id])
+  userId         String
+  promptUnlockId Int
+
+  @@id([userId, promptUnlockId])
+}
