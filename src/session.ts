@@ -10,7 +10,7 @@ export default class session {
 
   // These are to properly trigger an onEnd listener by setting booleans.
   private _ended: boolean = false;
-  onEnd: onEndListener;
+  onEnd?: onEndListener;
 
   // Discord IDs to indicate users partaking in the game.
   guesser: string;
@@ -20,12 +20,18 @@ export default class session {
   gameWin: boolean = false; //Change this to indicate a win and award EXP later down the road
   private _hintCount: number = 3;
 
-  constructor(guesser: string, host: string, onEnd: onEndListener) {
+  constructor(
+    guesser: string,
+    host: string,
+    onEnd?: onEndListener,
+    expires: number = 1000 * 60 * 60,
+  ) {
     this.guesser = guesser;
     this.host = host;
     // End the session after 1 hour:
-    this.sessionEnd = setTimeout(() => (this.ended = true), 1000 * 60 * 60);
-    this.onEnd = onEnd;
+    this.sessionEnd = setTimeout(() => (this.ended = true), expires);
+
+    if (onEnd) this.onEnd = onEnd;
   }
 
   get ended() {
@@ -35,8 +41,13 @@ export default class session {
   set ended(val: boolean) {
     this._ended = val;
 
+    // Jest figured out we don't need this timeout to be running, clear the timeout:
+    clearTimeout(this.sessionEnd);
+
     // When the session ends, perform further actions based on what was previously defined:
-    if (val) this.onEnd(this);
+    if (val && this.onEnd) {
+      this.onEnd(this);
+    }
   }
 
   // Obfuscate hint count so that we can restore proper numbers if they go higher or lower
