@@ -3,9 +3,9 @@ Session objects help keep track of an ongoing game between two players.
 It expires after 1 hour, when it expires, the game will end on it's own, no EXP is awarded to either player.
 */
 
-type onEndListener = (sessionObj: session) => void;
+type onEndListener = (sessionObj: Session) => void;
 
-export default class session {
+export default class Session {
   sessionEnd: NodeJS.Timeout;
 
   // These are to properly trigger an onEnd listener by setting booleans.
@@ -65,6 +65,6 @@ export default class session {
 
 // Nothing sophistcated to really store these things; if we need some functions to manipulate this later, we can create them
 // Once a session is created, it can be retrieved via thread ID
-const sessionStore = new Map<string, session>();
+const sessionStore = new Map<string, Session>();
 
 export { sessionStore, onEndListener };

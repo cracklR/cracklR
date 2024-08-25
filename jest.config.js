@@ -1,16 +1,16 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} **/
-// module.exports = {
-//   testEnvironment: "node",
-//   transform: {
-//     "^.+.tsx?$": ["ts-jest", {}],
-//   },
-//   preset: "ts-jest",
-// };
-
-const testEnvironment = "node",
-  transform = {
-    "^.+.tsx?$": ["ts-jest", {}],
+export default {
+  testEnvironment: "node",
+  transform: {
+    "^.+.tsx?$": [
+      "ts-jest",
+      {
+        tsconfig: {
+          allowImportingTsExtensions: true,
+          noEmit: true,
+          esModuleInterop: true,
+        },
+      },
+    ],
   },
-  preset = "ts-jest";
-
-export default { testEnvironment, transform, preset };
+};

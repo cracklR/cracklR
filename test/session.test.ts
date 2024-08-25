@@ -6,14 +6,14 @@ import {
   jest,
   test,
 } from "@jest/globals";
-import session, { sessionStore, onEndListener } from "../src/session.ts";
+import Session, { sessionStore, onEndListener } from "../src/session.ts";
 
 describe("Given the session is created", () => {
-  let testSession: session;
+  let testSession: Session;
 
   beforeEach(() => {
     // Arrange
-    testSession = new session("1234", "5678");
+    testSession = new Session("1234", "5678");
   });
 
   afterEach(() => {
@@ -54,7 +54,7 @@ describe("Given the sessionStore contains a session", () => {
   test("When a session is destroyed, Then also remove it from the store", () => {
     // Arrange
     const channelId = "channel1234";
-    const testSession = new session("1234", "5678", () =>
+    const testSession = new Session("1234", "5678", () =>
       sessionStore.delete(channelId),
     );
 
@@ -72,7 +72,7 @@ describe("Given the session has a custom expire time", () => {
   test("When the timeout expires, Then trigger the onEnd listener", async () => {
     // Arrange / Act
     // The timeout will be set to 0 so that the onEnd listener will trigger
-    const testSession = new session("1234", "5678", undefined, 0);
+    const testSession = new Session("1234", "5678", undefined, 0);
 
     const jestFunc = jest.fn();
 

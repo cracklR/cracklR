@@ -12,7 +12,7 @@
     "typescript-eslint": "^8.1.0"
   },
   "scripts": {
-    "build": "npx tsc",
+    "build": "cd src && npx tsc",
     "start": "node ./out/index",
     "test": "jest"
   },
